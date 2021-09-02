@@ -162,6 +162,8 @@ def xml_box_count():
         # print(xml_count)
     tk.Label(window, text=('框数:', xml_count)).grid(row=2, column=1)
 
+separator = ''
+id_column = ''
 def xml_id_order_increase():
     '''对按照顺序的text进行运算后替换原来的'''
     global separator, id_column
@@ -176,19 +178,20 @@ def xml_id_order_increase():
             # print(label.text)
             original_label = str(label.text)
             # print(label_text)
-            label_id = original_label.split(separator)[id_column]
-            # print(label_id)
-            if int(label_id) > int(is_greater_than_id):
-                # new_label = int(label.text) + 1
-                # print('原来的ID：', label_id)
-                new_id = int(label_id) + 1
-                # print('新的ID:', new_id)
-                # new_label = re.sub(r'(\d+_)(\d+)', '\1' + str(new_id), original_label)
-                new_label = original_label.split('_')[0] + '_' + str(new_id)
-                # print('原始label:', original_label)
-                # print('新的label:', new_label)
-                label.text = str(new_label)
-        datetime_now = datetime.datetime.now().strftime('%d%H%M%S')
+            if separator in original_label:
+                label_id = original_label.split(separator)[id_column]
+                # print(label_id)
+                if int(label_id) > int(is_greater_than_id):
+                    # new_label = int(label.text) + 1
+                    # print('原来的ID：', label_id)
+                    new_id = int(label_id) + 1
+                    # print('新的ID:', new_id)
+                    # new_label = re.sub(r'(\d+_)(\d+)', '\1' + str(new_id), original_label)
+                    new_label = original_label.split('_')[0] + '_' + str(new_id)
+                    # print('原始label:', original_label)
+                    # print('新的label:', new_label)
+                    label.text = str(new_label)
+        get_datetime()
         # print(datetime_now)
         tree.write(xml_path.rsplit('\\', 1)[-2] +'\\' + os.path.basename(xml_path).split('.')[-2] + '_' + datetime_now + '.xml')
         # print(xml_path.rsplit('\\', 1)[-2])
