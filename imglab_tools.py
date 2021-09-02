@@ -202,12 +202,33 @@ def set_id_is_greater_than_the():
     # print(is_greater_than_id)
 
 def set_input_separator():
+    '''设置编号的分隔符'''
     global separator
     separator = input_separator.get()
 
 def set_input_id_column():
+    '''设置需要递增的列数'''
     global id_column
     id_column = input_id_column.get()
+
+def get_datetime():
+    global datetime_now
+    datetime_now = datetime.datetime.now().strftime('%d%H%M%S')
+
+def delete_box():
+    '''删除指定编号的所有框'''
+    global datetime_now
+    xml_box_name = input_box_name.get() # 获取需要删除的框的编号
+    for xml_path in path_list:
+        tree = ET.parse(xml_path)
+        root = tree.getroot()
+        for image in root.iter('image'):
+            for box in image.findall('box'):
+                label = box.find('label')
+                if str(label.text) == str(xml_box_name):
+                    image.remove(box)
+    get_datetime()
+    tree.write(xml_path.rsplit('\\', 1)[-2] +'\\' + os.path.basename(xml_path).split('.')[-2] + '_' + datetime_now + '.xml')
 
 # UI界面
 window = tk.Tk()
@@ -237,8 +258,12 @@ input_separator.grid(row=6, column=0)
 input_id_column = tk.Entry(window)
 input_id_column.grid(row=6, column=1)
 
-tk.Button(window, text='点击设置分隔符', command=set_input_separator).grid(row=7, column=0)
-tk.Button(window, text='点击设置id列', command=set_input_id_column).grid(row=7, column=1)
+tk.Button(window, text='点击设置分隔符', command=set_input_separator, width=button_width).grid(row=7, column=0)
+tk.Button(window, text='点击设置id列', command=set_input_id_column, width=button_width).grid(row=7, column=1)
+
+tk.Button(window, text='删除框', command=delete_box, width=button_width).grid(row=8, column=0)
+input_box_name = tk.Entry(window)
+input_box_name.grid(row=8, column=1)
 
 # 创建一个菜单项，类似于导航栏
 menubar=tk.Menu(window)
