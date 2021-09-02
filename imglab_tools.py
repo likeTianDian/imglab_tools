@@ -136,7 +136,7 @@ def creat_xml():
 
     '''创建xml: imglab.exe -c 0.xml 0'''
     for file_path in xml_creat_path:
-        os.system('imglab.exe -c ' + file_path + '.xml ' + file_path)
+        os.system('.\\imglab.exe -c ' + file_path + '.xml ' + file_path)
         xml_file_count += 1
 
     '''显示一些状态'''
